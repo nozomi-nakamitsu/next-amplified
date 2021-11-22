@@ -1,7 +1,7 @@
 import Amplify, { API, Auth, withSSRContext } from "aws-amplify";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../../styles/Home.module.css";
 
 import {
@@ -21,7 +21,6 @@ Amplify.configure({ ...awsExports, ssr: true });
 
 export default function Home({ todos = [] }: { todos: Todo[] }) {
   const router = useRouter();
-
   async function handleCreateTodo(event) {
     event.preventDefault();
 
