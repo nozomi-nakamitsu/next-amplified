@@ -1,9 +1,11 @@
-import Amplify, { API, withSSRContext } from "aws-amplify";
+import Amplify, { API, Auth, withSSRContext } from "aws-amplify";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import React from "react";
 import styles from "../../styles/Home.module.css";
+import loginStyles from "../../styles/Login.module.css";
+
 import {
   CreateTodoInput,
   CreateTodoMutation,
@@ -18,6 +20,7 @@ import awsExports from "../aws-exports";
 import { useRouter } from "next/dist/client/router";
 
 Amplify.configure({ ...awsExports, ssr: true });
+
 export default function Home({ todos = [] }: { todos: Todo[] }) {
   const router = useRouter();
 
@@ -48,36 +51,32 @@ export default function Home({ todos = [] }: { todos: Todo[] }) {
   }
 
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Amplify + Next.js</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <AmplifyAuthenticator>
+      <div className={styles.container}>
+        <Head>
+          <title>Amplify + Next.js</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>Amplify + Next.js</h1>
+        <main className={styles.main}>
+          <h1 className={styles.title}>Amplify + Next.js</h1>
 
-        <p className={styles.description}>
-          <code className={styles.code}>{todos.length}</code>
-          Todos
-        </p>
+          <p className={styles.description}>
+            <code className={styles.code}>{todos.length}</code>
+            Todos
+          </p>
 
-        <div className={(styles.grid, styles.flex)}>
-          <div>
+          <div className={styles.grid}>
             {todos.map((todo) => (
-              <div className={styles.card}>
-                <a href={`/todo/${todo.id}`} key={todo.id}>
-                  <h3>{todo.name}</h3>
-                  <p>{todo.description}</p>
-                </a>
-              </div>
+              <a href={`/todo/${todo.id}`} key={todo.id}>
+                <h3>{todo.name}</h3>
+                <p>{todo.description}</p>
+              </a>
             ))}
-          </div>
 
-          <div className={styles.card}>
-            <h3 className={styles.title}>New Todo</h3>
+            <div className={styles.card}>
+              <h3 className={styles.title}>New Todo</h3>
 
-            <AmplifyAuthenticator>
               <form onSubmit={handleCreateTodo}>
                 <fieldset>
                   <legend>Title</legend>
@@ -100,22 +99,20 @@ export default function Home({ todos = [] }: { todos: Todo[] }) {
                   Sign out
                 </button>
               </form>
-            </AmplifyAuthenticator>
+            </div>
           </div>
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
+    </AmplifyAuthenticator>
   );
 }
-
+// getServerSidePropsとは、「getInitialPropsをサーバサイドだけで実行するようにしたもの」
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const SSR = withSSRContext({ req });
-  console.log(req);
-  console.log("SSR", SSR);
+
   const response = (await SSR.API.graphql({ query: listTodos })) as {
     data: ListTodosQuery;
   };
-  console.log("response", response);
 
   return {
     props: {
