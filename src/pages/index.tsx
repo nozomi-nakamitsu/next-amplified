@@ -1,10 +1,8 @@
 import Amplify, { API, Auth, withSSRContext } from "aws-amplify";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import React from "react";
 import styles from "../../styles/Home.module.css";
-import loginStyles from "../../styles/Login.module.css";
 
 import {
   CreateTodoInput,
@@ -49,6 +47,14 @@ export default function Home({ todos = [] }: { todos: Todo[] }) {
       throw new Error(errors[0].message);
     }
   }
+  const signOut = () => {
+    try {
+      Auth.signOut();
+      router.push("/login");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <AmplifyAuthenticator>
@@ -95,7 +101,7 @@ export default function Home({ todos = [] }: { todos: Todo[] }) {
                 </fieldset>
 
                 <button>Create Todo</button>
-                <button type="button" onClick={() => Auth.signOut()}>
+                <button type="button" onClick={signOut}>
                   Sign out
                 </button>
               </form>

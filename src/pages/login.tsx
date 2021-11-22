@@ -1,24 +1,9 @@
-import Amplify, { API, Auth, withSSRContext } from "aws-amplify";
-import { GetServerSideProps } from "next";
-import Head from "next/head";
-import Image from "next/image";
+import Amplify, { Auth } from "aws-amplify";
 import React, { useState } from "react";
 import styles from "../../styles/Login.module.css";
-import loginStyles from "../../styles/Login.module.css";
 
-import {
-  CreateTodoInput,
-  CreateTodoMutation,
-  ListTodosQuery,
-  Todo,
-} from "../API";
-import { createTodo } from "../graphql/mutations";
-import { listTodos } from "../graphql/queries";
-import { AmplifyAuthenticator } from "@aws-amplify/ui-react";
-import { GRAPHQL_AUTH_MODE } from "@aws-amplify/api";
 import awsExports from "../aws-exports";
 import { useRouter } from "next/dist/client/router";
-import { redirect } from "next/dist/server/api-utils";
 
 Amplify.configure({ ...awsExports, ssr: true });
 
