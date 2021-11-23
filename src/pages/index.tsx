@@ -29,7 +29,6 @@ export default function Home({ todos = [] }: { todos: Todo[] }) {
         picture: response.attributes.picture,
         email: response.attributes.email,
       });
-      console.log("aaa");
     }
   }, []);
 
