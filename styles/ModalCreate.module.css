@@ -1,0 +1,31 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.close {
+  margin-left: auto;
+  cursor: pointer;
+}
+.close:hover {
+  color: #f9e547;
+}
+
+.button {
+  background-color: #f9e547;
+  color: #97999b;
+  border: none;
+  padding: 8px;
+  border-radius: 8px;
+  margin-left: auto;
+  margin-top: 8px;
+  cursor: pointer;
+}
+.button:hover {
+  background-color: #97999b;
+  color: #f9e547;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+}

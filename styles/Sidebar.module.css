@@ -1,0 +1,47 @@
+.container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 100vh;
+  border-right: 1px solid #97999b;
+  color: #97999b;
+  padding: 40px;
+}
+.image {
+  width: 100px;
+  height: 100px;
+}
+.item::after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 1px;
+  background-color: #97999b;
+  bottom: 0px;
+  left: 0;
+}
+.img {
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.item {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+}
+.footer {
+  margin-top: 8px;
+  font-size: 16px;
+}
+.link {
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+.link:hover {
+  background-color: #f9e547;
+}
