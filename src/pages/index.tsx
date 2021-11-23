@@ -1,7 +1,7 @@
 import Amplify, { API, Auth, withSSRContext } from "aws-amplify";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import styles from "../../styles/Home.module.css";
 
 import {
@@ -20,6 +20,23 @@ import { useRouter } from "next/dist/client/router";
 Amplify.configure({ ...awsExports, ssr: true });
 
 export default function Home({ todos = [] }: { todos: Todo[] }) {
+  const [user, setUser] = useState({ name: "", picture: "", email: "" });
+  const getUser = useCallback(async () => {
+    const response = await Auth.currentAuthenticatedUser();
+    if (response) {
+      setUser({
+        name: response.attributes.name,
+        picture: response.attributes.picture,
+        email: response.attributes.email,
+      });
+      console.log("aaa");
+    }
+  }, []);
+
+  useEffect(() => {
+    getUser();
+  }, [getUser]);
+
   const router = useRouter();
   async function handleCreateTodo(event) {
     event.preventDefault();
@@ -65,6 +82,10 @@ export default function Home({ todos = [] }: { todos: Todo[] }) {
 
         <main className={styles.main}>
           <h1 className={styles.title}>Amplify + Next.js</h1>
+          <div className={styles.image}>
+            <img src={user.picture} alt="" className={styles.img} />
+          </div>
+          <p>{user.name}さん</p>
 
           <p className={styles.description}>
             <code className={styles.code}>{todos.length}</code>

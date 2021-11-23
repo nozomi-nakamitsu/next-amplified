@@ -1,5 +1,5 @@
 import Amplify, { Auth } from "aws-amplify";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "../../styles/Login.module.css";
 
 import awsExports from "../aws-exports";
@@ -9,6 +9,11 @@ Amplify.configure({ ...awsExports, ssr: true });
 
 export default function Login() {
   const router = useRouter();
+
+  const googleSignIn = async () => {
+    await Auth.federatedSignIn();
+
+  };
 
   const [state, setState] = useState({ username: "", password: "" });
 
@@ -52,6 +57,10 @@ export default function Login() {
           />
         </div>
         <div className={(styles.item, styles.footer)}>
+          <button className={styles.button} onClick={googleSignIn}>
+            {/* onClick={() => Auth.federatedSignIn({ provider: "Google" })} */}
+            Open Google
+          </button>
           <button className={styles.button} onClick={signIn}>
             Sign In
           </button>
